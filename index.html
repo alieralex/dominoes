@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dominó Dominicano</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
+
+        .nav-tabs button {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 25px;
+            border: none;
+            background: #f5f5f5;
+            color: #666;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-tabs button:hover {
+            background: #e0e0e0;
+        }
+
+        .nav-tabs button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .content-panel {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .content-panel.active {
+            display: block;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+
+        .game-card h3 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .game-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .game-detail {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .game-detail h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .game-detail h3 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .game-detail ul {
+            margin-left: 20px;
+            color: #666;
+        }
+
+        .game-detail li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .back-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #764ba2;
+            transform: translateX(-5px);
+        }
+
+        .score-setup {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+
+        .player-inputs {
+            display: grid;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .player-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .player-input input {
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .scoreboard {
+            margin-top: 30px;
+        }
+
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .score-table th,
+        .score-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .score-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        .score-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .score-input-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .score-input-row input {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .score-input-row button {
+            padding: 12px 30px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .score-input-row button:hover {
+            background: #45a049;
+        }
+
+        .winning-score {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .team-label {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .winner-announcement {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.5em;
+            font-weight: 600;
+            animation: celebrate 1s ease-in-out;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .game-controls button {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-reset {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #ee5a52;
+        }
+
+        .btn-new {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-new:hover {
+            background: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .nav-tabs button {
+                width: 100%;
+            }
+
+            .game-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎲 Dominó Dominicano</h1>
+            <p class="subtitle">Explora, juega y anota tus partidas</p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="active" onclick="showTab('explore')">Explorar Juegos</button>
+            <button onclick="showTab('score')">Anotar Partida</button>
+            <button onclick="showTab('history')">Historial</button>
+        </div>
+
+        <!-- Explore Games Panel -->
+        <div id="explore-panel" class="content-panel active">
+            <div id="games-list">
+                <h2 style="color: #667eea; margin-bottom: 20px;">Variantes Populares</h2>
+                <div class="game-grid">
+                    <div class="game-card" onclick="showGameDetail('clasico')">
+                        <h3>🎯 Dominó Clásico (Por Parejas)</h3>
+                        <p>El juego tradicional dominicano de 4 jugadores en equipos de 2. ¡El más popular!</p>
+                    </div>
+                    <div class="game-card" onclick="showGameDetail('individual')">
+                        <h3>👤 Dominó Individual</h3>
+                        <p>Cada jugador por su cuenta. El que llegue primero a la puntuación gana.</p>
+                    </div>
+                    <div class="game-card" onclick="showGameDetail('capicu')">
+                        <h3>🔄 Dominó Capicú</h3>
+                        <p>Ganas puntos extras cuando juegas fichas con números iguales en ambos extremos.</p>
+                    </div>
+                    <div class="game-card" onclick="showGameDetail('chivo')">
+                        <h3>🐐 Dominó de Chivo</h3>
+                        <p>Los perdedores acumulan puntos (el chivo). ¡No quieres tener el chivo más grande!</p>
+                    </div>
+                    <div class="game-card" onclick="showGameDetail('cerrado')">
+                        <h3>🔒 Dominó Cerrado</h3>
+                        <p>El juego termina cuando nadie puede jugar. Se cuentan las fichas restantes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-detail" style="display: none;">
+                <!-- Game details will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Score Panel -->
+        <div id="score-panel" class="content-panel">
+            <div id="score-setup">
+                <h2 style="color: #667eea; margin-bottom: 20px;">Nueva Partida</h2>
+                <div class="score-setup">
+                    <div class="form-group">
+                        <label for="game-type">Tipo de Juego</label>
+                        <select id="game-type" onchange="updatePlayerInputs()">
+                            <option value="clasico">Dominó Clásico (Por Parejas)</option>
+                            <option value="individual">Dominó Individual</option>
+                            <option value="capicu">Dominó Capicú</option>
+                            <option value="chivo">Dominó de Chivo</option>
+                            <option value="cerrado">Dominó Cerrado</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="winning-score">Puntos para Ganar</label>
+                        <input type="number" id="winning-score" value="200" min="50" step="50">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jugadores/Equipos</label>
+                        <div id="player-inputs" class="player-inputs">
+                            <!-- Player inputs will be inserted here -->
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" onclick="startGame()">Comenzar Partida</button>
+                </div>
+            </div>
+
+            <div id="scoreboard" style="display: none;">
+                <!-- Scoreboard will be inserted here -->
+            </div>
+        </div>
+
+        <!-- History Panel -->
+        <div id="history-panel" class="content-panel">
+            <h2 style="color: #667eea; margin-bottom: 20px;">Historial de Partidas</h2>
+            <div id="history-list">
+                <p style="color: #666; text-align: center; padding: 40px;">No hay partidas guardadas todavía. ¡Comienza una nueva partida!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentGame = null;
+        let gameHistory = [];
+
+        const gameDetails = {
+            clasico: {
+                name: 'Dominó Clásico (Por Parejas)',
+                players: 4,
+                teams: true,
+                description: 'El juego más popular en República Dominicana. Se juega con 4 jugadores en 2 equipos.',
+                rules: [
+                    'Se reparten 7 fichas a cada jugador',
+                    'El jugador con el doble más alto comienza',
+                    'Los jugadores juegan por turnos colocando fichas que coincidan con los extremos',
+                    'Si no puedes jugar, pasas tu turno',
+                    'Gana el equipo que se queda sin fichas primero',
+                    'Se cuentan los puntos de las fichas del equipo perdedor',
+                    'El primer equipo en llegar a 200 puntos (o la meta establecida) gana'
+                ],
+                scoring: 'Se suman los puntos de las fichas que quedan en mano del equipo perdedor. Capicú (cuando terminas con doble) vale doble.'
+            },
+            individual: {
+                name: 'Dominó Individual',
+                players: 4,
+                teams: false,
+                description: 'Cada jugador juega por su cuenta sin equipos.',
+                rules: [
+                    'Se reparten 7 fichas a cada jugador',
+                    'Mismas reglas de juego que el clásico',
+                    'Cada jugador acumula sus propios puntos',
+                    'El ganador de cada mano suma los puntos de todos los demás',
+                    'El primer jugador en llegar a la meta gana'
+                ],
+                scoring: 'El ganador suma los puntos de las fichas de todos los demás jugadores.'
+            },
+            capicu: {
+                name: 'Dominó Capicú',
+                players: 4,
+                teams: true,
+                description: 'Una variante donde terminar con doble (capicú) da puntos extra.',
+                rules: [
+                    'Mismas reglas que el dominó clásico',
+                    'Si terminas la mano con un doble que coincide con el otro extremo, es capicú',
+                    'Capicú vale el doble de puntos',
+                    'Algunos juegan que capicú automáticamente gana la partida'
+                ],
+                scoring: 'Puntos normales por ganar la mano, pero capicú vale el doble o gana automáticamente (según acuerdo previo).'
+            },
+            chivo: {
+                name: 'Dominó de Chivo',
+                players: 4,
+                teams: true,
+                description: 'Los perdedores acumulan puntos negativos (el chivo). El que tenga menos puntos gana.',
+                rules: [
+                    'Mismas reglas de juego que el clásico',
+                    'Los PERDEDORES acumulan los puntos de sus fichas',
+                    'El objetivo es tener MENOS puntos',
+                    'El equipo con más puntos al final tiene "el chivo más grande"',
+                    'Gana el equipo con menos puntos cuando alguien llega al límite'
+                ],
+                scoring: 'Los perdedores suman los puntos de sus fichas restantes. El equipo con menos puntos al final gana.'
+            },
+            cerrado: {
+                name: 'Dominó Cerrado',
+                players: 4,
+                teams: true,
+                description: 'El juego se tranca cuando nadie puede jugar.',
+                rules: [
+                    'Mismas reglas básicas que el clásico',
+                    'Si ningún jugador puede jugar, el juego está "cerrado" o "trancado"',
+                    'Se cuentan las fichas de cada equipo',
+                    'El equipo con menos puntos en fichas gana la mano',
+                    'Si hay empate, se considera empate o se juega otra mano'
+                ],
+                scoring: 'Cuando el juego se cierra, gana el equipo con menos puntos en sus fichas. El ganador suma la diferencia.'
+            }
+        };
+
+        function showTab(tab) {
+            document.querySelectorAll('.nav-tabs button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.content-panel').forEach(panel => panel.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tab + '-panel').classList.add('active');
+        }
+
+        function showGameDetail(gameType) {
+            const game = gameDetails[gameType];
+            const detail = document.getElementById('game-detail');
+            const list = document.getElementById('games-list');
+            
+            detail.innerHTML = `
+                <button class="back-button" onclick="hideGameDetail()">← Volver</button>
+                <div class="game-detail">
+                    <h2>${game.name}</h2>
+                    <p style="font-size: 1.1em; color: #666; margin-bottom: 20px;">${game.description}</p>
+                    
+                    <h3>📋 Reglas del Juego</h3>
+                    <ul>
+                        ${game.rules.map(rule => `<li>${rule}</li>`).join('')}
+                    </ul>
+                    
+                    <h3>💯 Sistema de Puntuación</h3>
+                    <p style="color: #666; margin-top: 10px;">${game.scoring}</p>
+                    
+                    <div style="margin-top: 30px;">
+                        <button class="btn-primary" onclick="startGameFromDetail('${gameType}')">
+                            Comenzar Partida de ${game.name}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            list.style.display = 'none';
+            detail.style.display = 'block';
+        }
+
+        function hideGameDetail() {
+            document.getElementById('games-list').style.display = 'block';
+            document.getElementById('game-detail').style.display = 'none';
+        }
+
+        function startGameFromDetail(gameType) {
+            document.getElementById('game-type').value = gameType;
+            showTab('score');
+            document.querySelectorAll('.nav-tabs button')[1].classList.add('active');
+            updatePlayerInputs();
+        }
+
+        function updatePlayerInputs() {
+            const gameType = document.getElementById('game-type').value;
+            const game = gameDetails[gameType];
+            const container = document.getElementById('player-inputs');
+            
+            if (game.teams) {
+                container.innerHTML = `
+                    <div class="player-input">
+                        <span class="team-label">Equipo 1:</span>
+                        <input type="text" id="team1-player1" placeholder="Jugador 1" value="Jugador 1">
+                        <input type="text" id="team1-player2" placeholder="Jugador 2" value="Jugador 2">
+                    </div>
+                    <div class="player-input">
+                        <span class="team-label">Equipo 2:</span>
+                        <input type="text" id="team2-player1" placeholder="Jugador 3" value="Jugador 3">
+                        <input type="text" id="team2-player2" placeholder="Jugador 4" value="Jugador 4">
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="player-input">
+                        <input type="text" id="player1" placeholder="Jugador 1" value="Jugador 1">
+                    </div>
+                    <div class="player-input">
+                        <input type="text" id="player2" placeholder="Jugador 2" value="Jugador 2">
+                    </div>
+                    <div class="player-input">
+                        <input type="text" id="player3" placeholder="Jugador 3" value="Jugador 3">
+                    </div>
+                    <div class="player-input">
+                        <input type="text" id="player4" placeholder="Jugador 4" value="Jugador 4">
+                    </div>
+                `;
+            }
+        }
+
+        function startGame() {
+            const gameType = document.getElementById('game-type').value;
+            const game = gameDetails[gameType];
+            const winningScore = parseInt(document.getElementById('winning-score').value);
+            
+            currentGame = {
+                type: gameType,
+                name: game.name,
+                teams: game.teams,
+                winningScore: winningScore,
+                players: [],
+                scores: [],
+                startTime: new Date()
+            };
+            
+            if (game.teams) {
+                currentGame.players = [
+                    {
+                        name: `${document.getElementById('team1-player1').value} & ${document.getElementById('team1-player2').value}`,
+                        score: 0
+                    },
+                    {
+                        name: `${document.getElementById('team2-player1').value} & ${document.getElementById('team2-player2').value}`,
+                        score: 0
+                    }
+                ];
+            } else {
+                currentGame.players = [
+                    { name: document.getElementById('player1').value, score: 0 },
+                    { name: document.getElementById('player2').value, score: 0 },
+                    { name: document.getElementById('player3').value, score: 0 },
+                    { name: document.getElementById('player4').value, score: 0 }
+                ];
+            }
+            
+            document.getElementById('score-setup').style.display = 'none';
+            renderScoreboard();
+        }
+
+        function renderScoreboard() {
+            const container = document.getElementById('scoreboard');
+            container.style.display = 'block';
+            
+            let winner = currentGame.players.find(p => {
+                if (currentGame.type === 'chivo') {
+                    return p.score >= currentGame.winningScore;
+                } else {
+                    return p.score >= currentGame.winningScore;
+                }
+            });
+            
+            if (winner && currentGame.type === 'chivo') {
+                winner = currentGame.players.reduce((min, p) => p.score < min.score ? p : min);
+            }
+            
+            let html = `
+                <h2 style="color: #667eea; margin-bottom: 20px;">${currentGame.name}</h2>
+                <div class="winning-score">
+                    ${currentGame.type === 'chivo' ? 'Primer equipo en' : 'Ganar con'} ${currentGame.winningScore} puntos
+                </div>
+            `;
+            
+            if (winner) {
+                html += `
+                    <div class="winner-announcement">
+                        🎉 ¡${winner.name} ${currentGame.type === 'chivo' ? 'GANA con menos puntos' : 'GANA'}! 🎉
+                    </div>
+                `;
+            }
+            
+            html += `
+                <table class="score-table">
+                    <thead>
+                        <tr>
+                            <th>${currentGame.teams ? 'Equipo' : 'Jugador'}</th>
+                            <th>Puntos Totales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            currentGame.players.forEach(player => {
+                html += `
+                    <tr>
+                        <td><strong>${player.name}</strong></td>
+                        <td style="font-size: 1.3em; font-weight: bold; color: #667eea;">${player.score}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            if (!winner) {
+                html += `
+                    <div class="score-input-row">
+                        ${currentGame.players.map((p, i) => `
+                            <input type="number" id="round-score-${i}" placeholder="${p.name.split('&')[0].trim()}" min="0" value="0">
+                        `).join('')}
+                        <button onclick="addRoundScore()">Agregar Mano</button>
+                    </div>
+                `;
+            }
+            
+            html += `
+                <div class="game-controls">
+                    <button class="btn-reset" onclick="resetScores()">Reiniciar Puntos</button>
+                    <button class="btn-new" onclick="endGame()">Terminar Partida</button>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function addRoundScore() {
+            currentGame.players.forEach((player, i) => {
+                const input = document.getElementById(`round-score-${i}`);
+                const points = parseInt(input.value) || 0;
+                player.score += points;
+                input.value = 0;
+            });
+            
+            currentGame.scores.push({
+                round: currentGame.scores.length + 1,
+                scores: currentGame.players.map(p => p.score)
+            });
+            
+            renderScoreboard();
+        }
+
+        function resetScores() {
+            if (confirm('¿Estás seguro de reiniciar los puntos?')) {
+                currentGame.players.forEach(p => p.score = 0);
+                currentGame.scores = [];
+                renderScoreboard();
+            }
+        }
+
+        function endGame() {
+            if (confirm('¿Terminar esta partida?')) {
+                currentGame.endTime = new Date();
+                gameHistory.push({...currentGame});
+                
+                currentGame = null;
+                document.getElementById('score-setup').style.display = 'block';
+                document.getElementById('scoreboard').style.display = 'none';
+                updateHistory();
+            }
+        }
+
+        function updateHistory() {
+            const container = document.getElementById('history-list');
+            
+            if (gameHistory.length === 0) {
+                container.innerHTML = '<p style="color: #666; text-align: center; padding: 40px;">No hay partidas guardadas todavía. ¡Comienza una nueva partida!</p>';
+                return;
+            }
+            
+            let html = '<div style="display: grid; gap: 20px;">';
+            
+            gameHistory.reverse().forEach((game, i) => {
+                const date = new Date(game.startTime);
+                const winner = game.type === 'chivo' 
+                    ? game.players.reduce((min, p) => p.score < min.score ? p : min)
+                    : game.players.reduce((max, p) => p.score > max.score ? p : max);
+                
+                html += `
+                    <div class="game-card" style="cursor: default;">
+                        <h3>${game.name}</h3>
+                        <p><strong>Fecha:</strong> ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</p>
+                        <p><strong>Ganador:</strong> ${winner.name} (${winner.score} puntos)</p>
+                        <p><strong>Puntuaciones finales:</strong></p>
+                        <ul style="margin-top: 10px;">
+                            ${game.players.map(p => `<li>${p.name}: ${p.score} puntos</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // Initialize player inputs on load
+        updatePlayerInputs();
+    </script>
+</body>
+</html>
