@@ -382,8 +382,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎲 Dominó Dominicano</h1>
-            <p class="subtitle">Explora, juega y anota tus partidas</p>
+            <h1>�domino Dominó Caribeño</h1>
+            <p class="subtitle">Explora, juega y anota tus partidas · 🇩🇴 🇵🇷 🇨🇺</p>
         </header>
 
         <div class="nav-tabs">
@@ -396,11 +396,15 @@
         <!-- Explore Games Panel -->
         <div id="explore-panel" class="content-panel active">
             <div id="games-list">
-                <h2 style="color: #667eea; margin-bottom: 20px;">Variantes Populares</h2>
-                <div class="game-grid">
+                <h2 style="color: #667eea; margin-bottom: 30px;">Variantes Populares</h2>
+                
+                <h3 style="color: #333; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    🇩🇴 República Dominicana
+                </h3>
+                <div class="game-grid" style="margin-bottom: 40px;">
                     <div class="game-card" onclick="showGameDetail('clasico')">
                         <h3>🎯 Dominó Clásico (Por Parejas)</h3>
-                        <p>El juego tradicional dominicano de 4 jugadores en equipos de 2. ¡El más popular!</p>
+                        <p>El juego tradicional de 4 jugadores en equipos de 2. ¡El más popular!</p>
                     </div>
                     <div class="game-card" onclick="showGameDetail('individual')">
                         <h3>👤 Dominó Individual</h3>
@@ -417,6 +421,42 @@
                     <div class="game-card" onclick="showGameDetail('cerrado')">
                         <h3>🔒 Dominó Cerrado</h3>
                         <p>El juego termina cuando nadie puede jugar. Se cuentan las fichas restantes.</p>
+                    </div>
+                </div>
+
+                <h3 style="color: #333; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    🇵🇷 Puerto Rico
+                </h3>
+                <div class="game-grid" style="margin-bottom: 40px;">
+                    <div class="game-card" onclick="showGameDetail('pr-clasico')">
+                        <h3>🎯 Dominó Puertorriqueño</h3>
+                        <p>Similar al clásico pero con reglas especiales de "tranca" y "pegao".</p>
+                    </div>
+                    <div class="game-card" onclick="showGameDetail('pr-100')">
+                        <h3>💯 Dominó a 100</h3>
+                        <p>Versión rápida popular en la isla. Primera pareja en 100 puntos gana.</p>
+                    </div>
+                    <div class="game-card" onclick="showGameDetail('pr-seis')">
+                        <h3>🎲 Dominó de Seis (Doble Seis)</h3>
+                        <p>Variante con fichas hasta el doble seis. Más estratégico y rápido.</p>
+                    </div>
+                </div>
+
+                <h3 style="color: #333; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    🇨🇺 Cuba
+                </h3>
+                <div class="game-grid">
+                    <div class="game-card" onclick="showGameDetail('cu-clasico')">
+                        <h3>🎯 Dominó Cubano</h3>
+                        <p>El juego de mesa más popular de Cuba. Se juega con pasión en toda la isla.</p>
+                    </div>
+                    <div class="game-card" onclick="showGameDetail('cu-bateo')">
+                        <h3>⚾ Dominó de Bateo</h3>
+                        <p>Cuando empiezas con doble y continúas del mismo palo. ¡Como batear un jonrón!</p>
+                    </div>
+                    <div class="game-card" onclick="showGameDetail('cu-pareja')">
+                        <h3>💑 La Pareja Cubana</h3>
+                        <p>Enfatiza la comunicación entre compañeros de equipo con "señas" permitidas.</p>
                     </div>
                 </div>
             </div>
