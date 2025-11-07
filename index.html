@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dominó Dominicano</title>
+    <title>Dominó Caribeño</title>
     <style>
         * {
             margin: 0;
@@ -36,6 +36,62 @@
             color: #667eea;
             font-size: 2.5em;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .domino-icon {
+            display: inline-flex;
+            gap: 3px;
+        }
+
+        .domino-tile {
+            width: 28px;
+            height: 56px;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            padding: 3px 0;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .domino-half {
+            width: 100%;
+            height: 45%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .domino-dot {
+            width: 5px;
+            height: 5px;
+            background: #667eea;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .dots-2 .domino-dot:nth-child(1) { top: 3px; left: 3px; }
+        .dots-2 .domino-dot:nth-child(2) { bottom: 3px; right: 3px; }
+
+        .dots-5 .domino-dot:nth-child(1) { top: 2px; left: 3px; }
+        .dots-5 .domino-dot:nth-child(2) { top: 2px; right: 3px; }
+        .dots-5 .domino-dot:nth-child(3) { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .dots-5 .domino-dot:nth-child(4) { bottom: 2px; left: 3px; }
+        .dots-5 .domino-dot:nth-child(5) { bottom: 2px; right: 3px; }
+
+        .domino-divider {
+            width: 80%;
+            height: 1px;
+            background: #667eea;
+            margin: 0 auto;
         }
 
         .subtitle {
@@ -382,7 +438,39 @@
 <body>
     <div class="container">
         <header>
-            <h1>�domino Dominó Caribeño</h1>
+            <h1>
+                <span class="domino-icon">
+                    <span class="domino-tile">
+                        <span class="domino-half dots-2">
+                            <span class="domino-dot"></span>
+                            <span class="domino-dot"></span>
+                        </span>
+                        <span class="domino-divider"></span>
+                        <span class="domino-half dots-5">
+                            <span class="domino-dot"></span>
+                            <span class="domino-dot"></span>
+                            <span class="domino-dot"></span>
+                            <span class="domino-dot"></span>
+                            <span class="domino-dot"></span>
+                        </span>
+                    </span>
+                    <span class="domino-tile">
+                        <span class="domino-half dots-5">
+                            <span class="domino-dot"></span>
+                            <span class="domino-dot"></span>
+                            <span class="domino-dot"></span>
+                            <span class="domino-dot"></span>
+                            <span class="domino-dot"></span>
+                        </span>
+                        <span class="domino-divider"></span>
+                        <span class="domino-half dots-2">
+                            <span class="domino-dot"></span>
+                            <span class="domino-dot"></span>
+                        </span>
+                    </span>
+                </span>
+                Dominó Caribeño
+            </h1>
             <p class="subtitle">Explora, juega y anota tus partidas · 🇩🇴 🇵🇷 🇨🇺</p>
         </header>
 
@@ -461,9 +549,7 @@
                 </div>
             </div>
 
-            <div id="game-detail" style="display: none;">
-                <!-- Game details will be inserted here -->
-            </div>
+            <div id="game-detail" style="display: none;"></div>
         </div>
 
         <!-- Score Panel -->
@@ -474,11 +560,23 @@
                     <div class="form-group">
                         <label for="game-type">Tipo de Juego</label>
                         <select id="game-type" onchange="updatePlayerInputs()">
-                            <option value="clasico">Dominó Clásico (Por Parejas)</option>
-                            <option value="individual">Dominó Individual</option>
-                            <option value="capicu">Dominó Capicú</option>
-                            <option value="chivo">Dominó de Chivo</option>
-                            <option value="cerrado">Dominó Cerrado</option>
+                            <optgroup label="🇩🇴 República Dominicana">
+                                <option value="clasico">Dominó Clásico (Por Parejas)</option>
+                                <option value="individual">Dominó Individual</option>
+                                <option value="capicu">Dominó Capicú</option>
+                                <option value="chivo">Dominó de Chivo</option>
+                                <option value="cerrado">Dominó Cerrado</option>
+                            </optgroup>
+                            <optgroup label="🇵🇷 Puerto Rico">
+                                <option value="pr-clasico">Dominó Puertorriqueño</option>
+                                <option value="pr-100">Dominó a 100</option>
+                                <option value="pr-seis">Dominó de Seis</option>
+                            </optgroup>
+                            <optgroup label="🇨🇺 Cuba">
+                                <option value="cu-clasico">Dominó Cubano</option>
+                                <option value="cu-bateo">Dominó de Bateo</option>
+                                <option value="cu-pareja">La Pareja Cubana</option>
+                            </optgroup>
                         </select>
                     </div>
 
@@ -489,18 +587,14 @@
 
                     <div class="form-group">
                         <label>Jugadores/Equipos</label>
-                        <div id="player-inputs" class="player-inputs">
-                            <!-- Player inputs will be inserted here -->
-                        </div>
+                        <div id="player-inputs" class="player-inputs"></div>
                     </div>
 
                     <button class="btn-primary" onclick="startGame()">Comenzar Partida</button>
                 </div>
             </div>
 
-            <div id="scoreboard" style="display: none;">
-                <!-- Scoreboard will be inserted here -->
-            </div>
+            <div id="scoreboard" style="display: none;"></div>
         </div>
 
         <!-- History Panel -->
@@ -517,7 +611,7 @@
             
             <div class="game-detail">
                 <h3>🎯 Cómo Usar Esta Aplicación</h3>
-                <p style="color: #666; margin-bottom: 20px;">Esta app te ayuda a explorar variantes de dominó dominicano y llevar el puntaje de tus partidas fácilmente.</p>
+                <p style="color: #666; margin-bottom: 20px;">Esta app te ayuda a explorar variantes de dominó caribeño y llevar el puntaje de tus partidas fácilmente.</p>
                 
                 <h3>1️⃣ Explorar Juegos</h3>
                 <ul>
@@ -552,17 +646,17 @@
                     <li>Usa "Terminar Partida" cuando quieras empezar una nueva</li>
                 </ul>
                 
-                <h3>🎲 Sobre el Dominó Dominicano</h3>
+                <h3>🎲 Sobre el Dominó Caribeño</h3>
                 <p style="color: #666; margin-top: 10px;">
-                    El dominó es más que un juego en República Dominicana - es parte de nuestra cultura. 
+                    El dominó es más que un juego en el Caribe - es parte de nuestra cultura. 
                     Se juega en las calles, en los colmados, en las casas, en todas partes. Esta app 
-                    incluye las variantes más populares que se juegan en el país.
+                    incluye las variantes más populares de República Dominicana, Puerto Rico y Cuba.
                 </p>
                 
                 <h3>❓ ¿Preguntas o Sugerencias?</h3>
                 <p style="color: #666; margin-top: 10px;">
                     Si tienes ideas para mejorar la app o quieres que agreguemos más variantes, 
-                    ¡háznoslo saber! Esta app está hecha con ❤️ para la comunidad dominicana.
+                    ¡háznoslo saber! Esta app está hecha con ❤️ para la comunidad caribeña.
                 </p>
             </div>
         </div>
@@ -574,9 +668,10 @@
 
         const gameDetails = {
             clasico: {
-                name: 'Dominó Clásico (Por Parejas)',
+                name: 'Dominó Clásico (Por Parejas) 🇩🇴',
                 players: 4,
                 teams: true,
+                country: 'República Dominicana',
                 description: 'El juego más popular en República Dominicana. Se juega con 4 jugadores en 2 equipos.',
                 rules: [
                     'Se reparten 7 fichas a cada jugador',
@@ -590,9 +685,10 @@
                 scoring: 'Se suman los puntos de las fichas que quedan en mano del equipo perdedor. Capicú (cuando terminas con doble) vale doble.'
             },
             individual: {
-                name: 'Dominó Individual',
+                name: 'Dominó Individual 🇩🇴',
                 players: 4,
                 teams: false,
+                country: 'República Dominicana',
                 description: 'Cada jugador juega por su cuenta sin equipos.',
                 rules: [
                     'Se reparten 7 fichas a cada jugador',
@@ -604,9 +700,10 @@
                 scoring: 'El ganador suma los puntos de las fichas de todos los demás jugadores.'
             },
             capicu: {
-                name: 'Dominó Capicú',
+                name: 'Dominó Capicú 🇩🇴',
                 players: 4,
                 teams: true,
+                country: 'República Dominicana',
                 description: 'Una variante donde terminar con doble (capicú) da puntos extra.',
                 rules: [
                     'Mismas reglas que el dominó clásico',
@@ -617,9 +714,10 @@
                 scoring: 'Puntos normales por ganar la mano, pero capicú vale el doble o gana automáticamente (según acuerdo previo).'
             },
             chivo: {
-                name: 'Dominó de Chivo',
+                name: 'Dominó de Chivo 🇩🇴',
                 players: 4,
                 teams: true,
+                country: 'República Dominicana',
                 description: 'Los perdedores acumulan puntos negativos (el chivo). El que tenga menos puntos gana.',
                 rules: [
                     'Mismas reglas de juego que el clásico',
@@ -631,9 +729,10 @@
                 scoring: 'Los perdedores suman los puntos de sus fichas restantes. El equipo con menos puntos al final gana.'
             },
             cerrado: {
-                name: 'Dominó Cerrado',
+                name: 'Dominó Cerrado 🇩🇴',
                 players: 4,
                 teams: true,
+                country: 'República Dominicana',
                 description: 'El juego se tranca cuando nadie puede jugar.',
                 rules: [
                     'Mismas reglas básicas que el clásico',
@@ -643,6 +742,101 @@
                     'Si hay empate, se considera empate o se juega otra mano'
                 ],
                 scoring: 'Cuando el juego se cierra, gana el equipo con menos puntos en sus fichas. El ganador suma la diferencia.'
+            },
+            'pr-clasico': {
+                name: 'Dominó Puertorriqueño 🇵🇷',
+                players: 4,
+                teams: true,
+                country: 'Puerto Rico',
+                description: 'La versión boricua del dominó clásico con sus propias tradiciones.',
+                rules: [
+                    'Se reparten 7 fichas a cada jugador',
+                    'El que tiene el doble más alto comienza',
+                    'Se permite "cantar" fichas para comunicarse con tu pareja',
+                    'La "tranca" ocurre cuando nadie puede jugar',
+                    'En una tranca, gana quien tenga menos puntos en mano',
+                    '"Pegao" es cuando terminas con tu última ficha sin que nadie más pueda jugar'
+                ],
+                scoring: 'Puntos normales por ganar. En una tranca, el equipo con menos puntos gana y suma la diferencia. Pegao puede valer doble según acuerdo.'
+            },
+            'pr-100': {
+                name: 'Dominó a 100 🇵🇷',
+                players: 4,
+                teams: true,
+                country: 'Puerto Rico',
+                description: 'Versión rápida muy popular en Puerto Rico. Primera pareja en llegar a 100 gana.',
+                rules: [
+                    'Mismas reglas que el dominó puertorriqueño clásico',
+                    'Meta de solo 100 puntos en lugar de 200',
+                    'Partidas más rápidas, ideales para torneos',
+                    'Mantiene toda la emoción en menos tiempo',
+                    'Popular en colmados y parques de la isla'
+                ],
+                scoring: 'Primera pareja en llegar a 100 puntos exactos gana la partida.'
+            },
+            'pr-seis': {
+                name: 'Dominó de Seis (Doble Seis) 🇵🇷',
+                players: 4,
+                teams: true,
+                country: 'Puerto Rico',
+                description: 'Se juega con fichas hasta el doble seis (28 fichas en total).',
+                rules: [
+                    'Solo se usan fichas del 0-0 al 6-6 (28 fichas)',
+                    'Se reparten 7 fichas a cada jugador',
+                    'Juego más rápido y estratégico',
+                    'Menos fichas significa más trancas',
+                    'Requiere más memoria de las fichas jugadas',
+                    'Popular para partidas rápidas'
+                ],
+                scoring: 'Sistema de puntuación normal, pero las partidas son más cortas y tácticas.'
+            },
+            'cu-clasico': {
+                name: 'Dominó Cubano 🇨🇺',
+                players: 4,
+                teams: true,
+                country: 'Cuba',
+                description: 'El juego nacional de Cuba. Se juega con pasión en toda la isla.',
+                rules: [
+                    'Se reparten 10 fichas a cada jugador (usando doble-9)',
+                    'El doble más alto comienza',
+                    'Se permite comunicación limitada entre parejas',
+                    'Juego muy social y conversacional',
+                    'La "tranca" es parte estratégica importante',
+                    'Se juega hasta 200 puntos normalmente'
+                ],
+                scoring: 'El equipo ganador suma todos los puntos de las fichas del equipo perdedor.'
+            },
+            'cu-bateo': {
+                name: 'Dominó de Bateo 🇨🇺',
+                players: 4,
+                teams: true,
+                country: 'Cuba',
+                description: 'Cuando empiezas con un doble y sigues con ese mismo número. ¡Como batear un jonrón!',
+                rules: [
+                    'Se juega con las reglas normales del dominó cubano',
+                    'Un "bateo" ocurre cuando tienes el doble y varias fichas del mismo palo',
+                    'Ejemplo: tienes 5-5, 5-3, 5-1, 5-6 y empiezas con el 5-5',
+                    'Puedes jugar varias fichas seguidas del mismo palo',
+                    'Es una jugada muy valorada y emocionante',
+                    'Batear da puntos extra o gana automáticamente (según acuerdo previo)'
+                ],
+                scoring: 'Bateo completo puede valer el doble de puntos o ganar la mano instantáneamente.'
+            },
+            'cu-pareja': {
+                name: 'La Pareja Cubana 🇨🇺',
+                players: 4,
+                teams: true,
+                country: 'Cuba',
+                description: 'Versión que enfatiza la comunicación entre compañeros con señas permitidas.',
+                rules: [
+                    'Se permite comunicación más abierta entre parejas',
+                    'Señas con las manos para indicar palos fuertes',
+                    'Tocar fichas para comunicar información',
+                    'La comunicación es parte de la estrategia',
+                    'Requiere química y entendimiento entre parejas',
+                    'Muy popular en reuniones familiares'
+                ],
+                scoring: 'Sistema de puntuación estándar, pero la estrategia de pareja es más importante.'
             }
         };
 
@@ -663,6 +857,7 @@
                 <button class="back-button" onclick="hideGameDetail()">← Volver</button>
                 <div class="game-detail">
                     <h2>${game.name}</h2>
+                    <p style="font-size: 0.9em; color: #999; margin-bottom: 10px;">🌍 ${game.country}</p>
                     <p style="font-size: 1.1em; color: #666; margin-bottom: 20px;">${game.description}</p>
                     
                     <h3>📋 Reglas del Juego</h3>
@@ -918,7 +1113,6 @@
             container.innerHTML = html;
         }
 
-        // Initialize player inputs on load
         updatePlayerInputs();
     </script>
 </body>
